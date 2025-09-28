@@ -7,7 +7,7 @@ def sobel_edge_detection(image):
 
     image_blur = cv2.GaussianBlur(image_gray, (3, 3), 0)
 
-    sobelxy = (255*cv2.Sobel(image_blur,cv2.CV_64F,1,1,5) ).clip(0,255).astype(np.uint8)
+    sobelxy = (255*cv2.Sobel(image_blur,cv2.CV_64F,1,1, ksize=1) ).clip(0,255).astype(np.uint8)
     cv2.imwrite("saved_pictures/sobel_lambo.png", sobelxy)
     return sobelxy
 
