@@ -25,12 +25,12 @@ def resize(image):
 
 def copy(image):
     height, width, channels = image.shape
-    emptyPictureArray = np.zeros((height, width, 3), dtype=np.uint8)
+    empty_picture_array = np.zeros((height, width, 3), dtype=np.uint8)
     for y in range(height):
         for x in range(width):
-            emptyPictureArray[y, x] = image[y, x]
-    cv2.imwrite("saved_pictures/empty.png", emptyPictureArray)
-    return emptyPictureArray
+            empty_picture_array[y, x] = image[y, x]
+    cv2.imwrite("saved_pictures/empty.png", empty_picture_array)
+    return empty_picture_array
 
 def grayscale(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -38,9 +38,9 @@ def grayscale(image):
     return gray
 
 def hsv(image):
-    hsvImage = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-    cv2.imwrite("saved_pictures/hsv_lena.png", hsvImage)
-    return hsvImage
+    hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    cv2.imwrite("saved_pictures/hsv_lena.png", hsv_image)
+    return hsv_image
 
 def hue_shifted(image):
     shifted = (image.astype(np.int16) + 50) % 256
