@@ -67,7 +67,7 @@ def evaluate_dataset(dataset_root, results_folder, method="orb"):
             print(f"Saved: {save_path}")
 
             # Display match image
-            plt.figure(figsize=(12, 6))
+            # plt.figure(figsize=(12, 6))
             plt.imshow(cv2.cvtColor(match_img, cv2.COLOR_BGR2RGB))
             plt.title(f"{folder_name}: {match_count} matches - {result.upper()}")
             plt.axis('off')
@@ -95,10 +95,33 @@ def evaluate_dataset(dataset_root, results_folder, method="orb"):
 
 def compare_pipelines(dataset_root):
     import time
+    import tracemalloc
+
+    results = {}
 
     for method in ["orb", "sift"]:
+        tracemalloc.start()
         start = time.time()
+
         evaluate_dataset(dataset_root, f"saved_pictures/{method}", method)
+
         elapsed = time.time() - start
+        current, peak = tracemalloc.get_traced_memory()
+        tracemalloc.stop()
+
+        results[method] = {
+            'time': elapsed,
+            'memory': peak / 1024 / 1024  # Convert to MB
+        }
+
         print(f"\n{method.upper()} completed in {elapsed:.2f} seconds.")
 
+    # Print comparison
+    print("\n" + "=" * 60)
+    print("RESOURCE COMPARISON")
+    print("=" * 60)
+    print(f"{'Metric':<25} {'ORB':<15} {'SIFT':<15}")
+    print("-" * 60)
+    print(f"{'Execution Time (s)':<25} {results['orb']['time']:<15.2f} {results['sift']['time']:<15.2f}")
+    print(f"{'Peak Memory (MB)':<25} {results['orb']['memory']:<15.2f} {results['sift']['memory']:<15.2f}")
+    print("=" * 60)
