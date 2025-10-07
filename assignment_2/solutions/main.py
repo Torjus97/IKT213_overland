@@ -42,11 +42,20 @@ def hsv(image):
     cv2.imwrite("saved_pictures/hsv_lena.png", hsv_image)
     return hsv_image
 
-def hue_shifted(image):
-    shifted = (image.astype(np.int16) + 50) % 256
-    shifted = shifted.astype(np.uint8)
-    cv2.imwrite("saved_pictures/hue_shifted_lena.png", shifted)
-    return shifted
+def hue_shifted(image, emptyPictureArray, hue):
+    height, width, channels = image.shape
+    #emptyPictureArray = np.zeros((height, width, channels), dtype=np.uint8)
+
+    for i in range(height):
+        for j in range(width):
+            for k in range(channels):
+                value = int(image[i, j, k])+hue
+                value = max(0, min(255, value))
+                emptyPictureArray[i, j, k] = value
+    #shifted = (image.astype(np.int16) + 50) % 256
+    #shifted = shifted.astype(np.uint8)
+    cv2.imwrite("saved_pictures/hue_shifted_lena.png", emptyPictureArray)
+    return emptyPictureArray
 
 def smoothing(image):
     gaussian = cv2.GaussianBlur(image, (15, 15), 0)
@@ -80,7 +89,7 @@ def main():
         "4": lambda: copy(image),
         "5": lambda: grayscale(image),
         "6": lambda: hsv(image),
-        "7": lambda: hue_shifted(image),
+        "7": lambda: hue_shifted(image, np.zeros_like(image), 50),
         "8": lambda: smoothing(image),
         "9": lambda: rotation(image)
     }
