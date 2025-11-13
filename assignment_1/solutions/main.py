@@ -23,7 +23,7 @@ def print_image_information(image):
     print("Width:", width)
     print("Channels:", channels)
     print("Size:", image.size)
-    print("Data Type:", image.dtype)
+    print("datasets Type:", image.dtype)
 
 
 def main():
